@@ -38,7 +38,7 @@ class foo {
   // ...
 }
 
-const alt = function( ego, mask, ...args ) {
+const alt = function( ...args ) {
   console.log( 'hello from alt foo!' );
 }
 
@@ -62,14 +62,22 @@ bar(); // Class constructor bar cannot be invoked without 'new'
        // ...because we didn't altEgo() `bar`
 ```
 
-## Alt parameters
+## Alt extras
 
-The alternate function always has at least two parameters:
+The alternate function gets two properties:
 
-* `ego` - it's evil twin (in our case, the original `foo`)
-* `mask` - the fake ego (in our case, the new `foo`)
+* `ego` - the constructor (in our case, the original `foo`)
+* `mask` - the mask function (in our case, the new `foo`)
 
-Any other arguments passed in to the invocation will appear after those.
+For example, you could do:
+
+```es6
+const alt = function( ...args ) {
+  return new alt.ego( ...args );
+}
+```
+
+In which case invoking `let ifoo = foo( some, args )` would give same results as `let ifoo = new foo( some, args )`.
 
 ## Credits
 
