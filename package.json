@@ -1,0 +1,35 @@
+{
+    "name": "es6-altEgo",
+    "version": "1.0.0",
+    "description": "Invoke alternate function if a class constructor is invoked without `new`.",
+    "devDependencies": {
+        "eslint": "^4.15.0"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "parserOptions": {
+            "ecmaVersion": 6,
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "modules": true,
+                "jsx": false
+            }
+        },
+        "rules": {
+            "semi": "error",
+            "no-console": "off",
+            "no-extra-parens": "error",
+            "no-template-curly-in-string": "error",
+            "array-callback-return": "error",
+            "block-scoped-var": "warn"
+        },
+        "env": {
+            "es6": true,
+            "browser": true,
+            "jquery": true
+        },
+        "globals": {
+            "console": "readonly"
+        }
+    }
+}
