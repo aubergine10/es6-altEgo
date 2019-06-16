@@ -27,7 +27,7 @@ foo(); // Class constructor foo cannot be invoked without 'new'
 
 Why would you ever want to do this?
 
-Well, maybe you want to dual-purpose your class to work both as a constructor (`new foo()`) or as a mixin (`foo( someObj )`).
+Well, maybe you want to dual-purpose your class to work both as a constructor `new foo()` or as a mixin `foo( someObj )`.
 
 ## The solution
 
