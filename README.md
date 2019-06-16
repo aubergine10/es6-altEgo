@@ -2,13 +2,16 @@
 
 Give your constructors and alter ego, allowing classes to be used as both a `constructor()` and a `function()`.
 
-Requires an ES6 environment that supports [`new.target`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target). It won't work in Internet Exploder.
+* Tiny, <20 lines of code
+* Fast - practically no impact on performance
+* Requires an ES6 environment with [`new.target`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target).
+* Won't work in IE, works great in all other browsers
 
 ## Why?
 
 So, I ran in to that issue where you can't invoke a `constructor()` as a normal function, it can only be used with `new`.
 
-After doing some refactoring, I realised I'd have to rewrite a bunch of documentation as well. That's where I snapped...
+After doing some refactoring, I realised I'd have to rewrite a bunch of documentation. That's where I snapped...
 
 ## The problem
 
@@ -29,6 +32,8 @@ Well, maybe you want to dual-purpose your class to work both as a constructor (`
 ## The solution
 
 ```es6
+import altEgo from './path-to/altEgo.js';
+
 class foo {
   // ...
 }
@@ -65,3 +70,11 @@ The alternate function always has at least two parameters:
 * `mask` - the fake ego (in our case, the new `foo`)
 
 Any other arguments passed in to the invocation will appear after those.
+
+## Credits
+
+Based on a [idea by Bergi](https://stackoverflow.com/questions/56621336/is-there-a-way-to-allow-a-class-constructor-to-be-invoked-as-if-it-were-an-ordin).
+
+## License
+
+"The Unlicense", ie. public domain. Because screw lawyers.

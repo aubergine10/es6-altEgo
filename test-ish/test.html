@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8"/>
+        <title>test</title>
+        <script type="text/javascript">
+'use strict';
+
+class foo {
+    static chk() {
+        console.log(`static ${this.name}.chk()`);
+    }
+
+    static get getchk() {
+        console.log(`static ${this.name}.getchk`);
+    }
+
+    constructor( a, b, c ) {
+        this.con = true;
+        console.log(`new ${new.target.name}()`);
+    }
+
+    check() {
+        console.log(`${this.constructor.name} inst.check(); inst.con = `+this.con);
+    }
+
+    get getcheck() {
+        console.log(`${this.constructor.name} inst.getcheck`);
+    }
+}
+
+console.dir( foo );
+
+function altEgo( alt, ego ) {
+
+    if ( typeof alt !== 'function' ) throw new TypeError( `alt parameter must be a function` );
+    if ( typeof ego !== 'function' ) throw new TypeError( `ego parameter must be a function` );
+
+    const mask = function( ...args ) {
+        return new.target ? Reflect.construct( ego, args, new.target ) : alt( ego, mask, ...args );
+    }
+
+    for ( const property of Object.getOwnPropertyNames( ego ) )
+        if ( altEgo.always.has( property ) || !mask.hasOwnProperty( property ) )
+            Object.defineProperty( mask, property, Object.getOwnPropertyDescriptor( ego, property ) );
+
+    return mask;
+}
+altEgo.always = new Set([ 'name', 'length', 'prototype' ]); // properties to copy to mask
+
+let alt = function( ego, mask, target ) {
+    console.log( 'alt function' );
+    for ( const property of alt.clone )
+        Object.defineProperty( target, property, Object.getOwnPropertyDescriptor( ego.prototype, property ) );
+    return target;
+}
+alt.clone = new Set([ 'check', 'getcheck' ]);
+
+foo = altEgo( alt, foo );
+
+console.dir( foo );
+
+console.log('foo =====================================');
+
+foo.chk();
+void foo.getchk;
+let ifoo = new foo;
+ifoo.check();
+void ifoo.getcheck;
+
+console.log('woo =====================================');
+
+class woo extends foo {
+    constructor() {
+        super();
+    }
+}
+
+woo.chk();
+void woo.getchk;
+let iwoo = new woo;
+iwoo.check();
+void iwoo.getcheck;
+
+console.log('bar =====================================');
+
+let ibar = foo( {} );
+ibar.check();
+void ibar.getcheck;
+
+        </script>
+    </head>
+    <body>
+        Ok, so it's not proper tests, but it will do for now. Look at the browser console for output.
+    </body>
+</html>
