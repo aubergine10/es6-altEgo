@@ -1,2 +1,67 @@
-# es6-altEto
-Allow javascript class constructors to invoke an alternate function when not invoked with `new`.
+# es6-altEgo
+
+Give your constructors and alter ego, allowing classes to be used as both a `constructor()` and a `function()`.
+
+Requires an ES6 environment that supports [`new.target`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new.target). It won't work in Internet Exploder.
+
+## Why?
+
+So, I ran in to that issue where you can't invoke a `constructor()` as a normal function, it can only be used with `new`.
+
+After doing some refactoring, I realised I'd have to rewrite a bunch of documentation as well. That's where I snapped...
+
+## The problem
+
+```es6
+class foo {
+  constructor() {
+    console.log( 'hello from ego foo!' );
+  }
+}
+
+foo(); // Class constructor foo cannot be invoked without 'new'
+```
+
+Why would you ever want to do this?
+
+Well, maybe you want to dual-purpose your class to work both as a constructor (`new foo()`) or as a mixin (`foo( someObj )`).
+
+## The solution
+
+```es6
+class foo {
+  // ...
+}
+
+const alt = function( ego, mask, ...args ) {
+  console.log( 'hello from alt foo!' );
+}
+
+foo = altEgo( alt, foo ); // the new foo is pretty much identical twin of the original foo
+
+foo(); // hello from alt foo!
+
+void new foo(); // hello from ego foo!
+
+class bar extends foo {
+  constructor() {
+    console.log( 'hello from ego bar!' );
+    super();
+  }
+}
+
+void new bar(); // hello from ego bar!
+                // hello from ego foo!
+
+bar(); // Class constructor bar cannot be invoked without 'new'
+       // ...because we didn't altEgo() `bar`
+```
+
+## Alt parameters
+
+The alternate function always has at least two parameters:
+
+* `ego` - it's evil twin (in our case, the original `foo`)
+* `mask` - the fake ego (in our case, the new `foo`)
+
+Any other arguments passed in to the invocation will appear after those.
